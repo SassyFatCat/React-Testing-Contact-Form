@@ -58,7 +58,8 @@ async () => {
     const email = screen.getByLabelText(/email./i);
     fireEvent.change(email, {target: {value: 'r'}});
 
+    
     waitFor(() => {
-        expect( screen.getByTestId('emError')).toBeInTheDocument();
+        expect(screen.getByTestId('emError')).toBeInTheDocument();
     })
 })
