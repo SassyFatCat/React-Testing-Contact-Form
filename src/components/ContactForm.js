@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import axios from 'axios';
 
 const ContactForm = () => {
   const [data, setData] = useState();
@@ -8,6 +9,9 @@ const ContactForm = () => {
   });
   const onSubmit = (data) => {
     setData(data);
+    axios.post('https://reqres.in/api/users', data)
+      .then(success => console.log(success))
+      .catch(fail => console.log(fail));
   };
 
   return (
@@ -32,7 +36,7 @@ const ContactForm = () => {
             id='lastName'
             name="lastName"
             placeholder="Burke"
-            ref={register({ required: true })}
+            ref={register({ required: true, minLength: 2 })}
           />
           {errors.lastName && (
             <p data-testid='lnError'>Looks like there was an error: {errors.lastName.type}</p>
@@ -43,7 +47,7 @@ const ContactForm = () => {
           <label htmlFor="email">
             Email*
           </label>
-          <input placeholder="bluebill1049@hotmail.com" name="email" id="email" ref={register({ required: true })} />
+          <input placeholder="bluebill1049@hotmail.com" name="email" id="email" ref={register({ required: true, minLength: 2 })} />
           {errors.email && (
             <p data-testid='emError'>Looks like there was an error: {errors.email.type}</p>
           )}
@@ -53,8 +57,9 @@ const ContactForm = () => {
           <textarea data-testid='message' id="message" name="message" ref={register({ required: false })} />
         </div>
         {data && (
-          <pre style={{ textAlign: "left", color: "white" }}>
-            {JSON.stringify(data, null, 2)}
+          <pre style={{ textAlign: "center", color: "white" }}>
+            {/* {JSON.stringify(data, null, 2)} */}
+            <h3>Success! Thanks, {data.firstName}</h3>
           </pre>
         )}
         <input type="submit" />
